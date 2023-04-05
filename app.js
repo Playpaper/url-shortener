@@ -1,6 +1,7 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
+const generateCode = require('./generate_code')
 
 if(process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
@@ -27,6 +28,7 @@ app.set('view engine', 'hbs')
 
 
 app.get('/', (req, res) => {
+  console.log(`generateCode = ${generateCode()}`)
   res.render('index')
 })
 
