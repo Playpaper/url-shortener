@@ -1,7 +1,20 @@
 <div class="container text-center">
-  <h4>URL Shortener</h4>
-  <form novalidate>
-    <input type="text" name="url" placeholder="enter url here ..." required>
-    <button class="btn btn-info" type="submit">Shorten</button>
+  <h4 class="py-3">URL Shortener</h4>
+  <form id="url-convert-form" action="/" method="POST" novalidate>
+    <div class="input-group mb-3">
+      <span class="input-group-text">Original URL</span>
+      <input type="text" name="urlOrigin" class="form-control" placeholder="enter url here ..." value="{{ originalUrl }}" required>
+      <button class="btn btn-outline-secondary" type="submit" id="btn-shorten">Shorten</button>
+    </div>
   </form>
+  <div class="input-group mb-3">
+    <span class="input-group-text">Shortener URL</span>
+    <input type="text" name="urlShort" class="form-control" value="{{ shortUrl }}{{ shortCode }}" disabled>
+    <button class="btn btn-outline-secondary" type="button" id="btn-copy">Copy</button>
+  </div>
+  {{#if shortCode }}
+    <p>shortCode : http://localhost/:3000/{{ shortCode }}</p>
+    <p>originalUrl : {{ originalUrl }}</p>
+  {{/if}}
 </div>
+<script src="/javascripts/index.js"></script>

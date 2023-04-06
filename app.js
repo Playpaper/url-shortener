@@ -1,6 +1,7 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
+const Url = require('./models/url')
 const generateCode = require('./generate_code')
 
 if(process.env.NODE_ENV !== 'production') {
@@ -27,12 +28,49 @@ app.engine('hbs', exphbs({
 app.set('view engine', 'hbs')
 
 app.use(express.static('public'))
+app.use(express.urlencoded({ extended:true }))
+
 
 app.get('/', (req, res) => {
-  console.log(`generateCode = ${generateCode()}`)
   res.render('index')
+})
+
+app.post('/', (req, res) => {
+  const originalUrl = req.body.urlOrigin
+  const shortUrl = `https://localhost:${PORT}/` 
+  // find db if originalUrl exist ? true(data from db) : false(create a code) 
+  Url.findOne({ originalUrl })
+    .lean()
+    .then(data => {
+      console.log('data = ', data)
+      if(data) {
+        res.render('index', { shortUrl, originalUrl: data.originalUrl, shortCode: data.shortCode })
+      }else{
+        checkCodeRepeat(res, shortUrl, originalUrl, generateCode()) 
+      }
+    })
+    .catch(err => console.log(err))
 })
 
 app.listen(PORT, () => {
   console.log(`The express server is listening on https://localhost/${PORT}`)
 })
+
+function checkCodeRepeat(res, shortUrl, originalUrl, shortCode) {
+  console.log('(in)shortCode = ',  shortCode, 'originalUrl = ', originalUrl)
+  Url.exists({ shortCode })
+    .then(data => {
+      if(data) { 
+        // repeat > generate new code
+        console.log('(re)shortCode = ',  shortCode, 'originalUrl = ', originalUrl)
+        checkCodeRepeat(res, shortUrl, originalUrl, generateCode())
+      }else {
+        // no repeat > create code
+        console.log('(final)shortCode = ',  shortCode, 'originalUrl = ', originalUrl)
+        Url.create({ originalUrl, shortCode })
+          .then(() => res.render('index', { shortUrl, originalUrl, shortCode }))
+          .catch(err => console.log(err))
+      }
+    })
+    .catch(err => console.log(err))
+}
