@@ -12,7 +12,7 @@ function generateCode() {
   // const LOWER_CASE_LETTERS = 'abcdefghijklmnopqrstuvwxyz'
   // const UPPER_CASE_LETTERS = LOWER_CASE_LETTERS.toUpperCase()
   // const NUMBERS = '1234567890'
-  const NUMBERS = '1234'
+  const NUMBERS = '123456'
   const SHORT_LENGTH = 1
 
   // create a collection of shortener url

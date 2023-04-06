@@ -5,8 +5,47 @@
   color: #fff;
 }
 
-.btn.btn-outline-secondary {
+.btn-copy {
   width: 86px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  overflow: hidden;
+}
+
+.btn-copy:after {
+  content: "";
+  background: #bebebe;
+  display: block;
+  position: absolute;
+  opacity: 0;
+  transition: all 0.5s;
+  top: 0;
+  left: 0;
+  width: 90px;
+  height: 42px;
+}
+
+.btn-copy:active:after {
+  opacity: 1;
+  transition: 0s;
+  width: 0;
+  height: 0;
+  top: 50%;
+  left: 50%;
+
+}
+
+/* 驗證不通過 */
+form.was-validated .form-control:invalid {
+  border: 1px solid #ced4da;
+  /* border-top: 1px solid red; */
+  /* border-bottom: 1px solid red; */
+}
+
+/* 驗證通過 */
+form.was-validated .form-control:valid {
+  border: 1px solid #ced4da;
+  /* border: 1px solid green; */
 }
 
 @media screen and (min-width: 1200px) {
@@ -14,4 +53,3 @@
     max-width: 900px;
   }
 }
-
