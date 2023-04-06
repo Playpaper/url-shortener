@@ -18,7 +18,6 @@ router.post('/', (req, res) => {
   Url.findOne({ originalUrl })
     .lean()
     .then(data => {
-      console.log('data = ', data)
       if(data) {
         res.render('index', { shortUrl, originalUrl: data.originalUrl, shortCode: data.shortCode })
       }else{
@@ -33,7 +32,6 @@ router.get('/:shortCode', (req, res) => {
   const shortCode = req.params.shortCode
   Url.findOne({ shortCode })
     .then(data => {
-      console.log('data = ', data)
       data ? res.redirect(data.originalUrl) : res.render('index', { wrongShortCode: shortUrl+shortCode })
     })
     .catch(err => console.log(err))
@@ -41,16 +39,13 @@ router.get('/:shortCode', (req, res) => {
 
 // create a new shortCode and check if repeat
 function checkCodeRepeat(res, shortUrl, originalUrl, shortCode) {
-  console.log('(in)shortCode = ',  shortCode, 'originalUrl = ', originalUrl)
   Url.exists({ shortCode })
     .then(data => {
       if(data) { 
         // repeat > generate new code
-        console.log('(re)shortCode = ',  shortCode, 'originalUrl = ', originalUrl)
         checkCodeRepeat(res, shortUrl, originalUrl, generateCode())
       }else {
         // no repeat > create code
-        console.log('(final)shortCode = ',  shortCode, 'originalUrl = ', originalUrl)
         Url.create({ originalUrl, shortCode })
           .then(() => res.render('index', { shortUrl, originalUrl, shortCode }))
           .catch(err => console.log(err))
