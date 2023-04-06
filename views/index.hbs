@@ -1,9 +1,17 @@
-<div class="container text-center">
-  <h4 class="py-3">URL Shortener</h4>
+<div class="container">
+  <div class="row justify-content-center align-items-center py-5">
+    <div class="col-3 col-md-2 col-sm-3 ps-5 img-box">
+      <img src="https://assets-lighthouse.alphacamp.co/uploads/image/file/16716/ExportedContentImage_00.png" class="img-fluid" alt="URL Shortener">
+    </div>
+    <div class="col-12 col-md-4 col-sm-6">
+      <h1 class="title mt-2">URL Shortener</h1>
+    </div>
+  </div>
+  
   <form id="url-convert-form" action="/" method="POST" novalidate>
     <div class="input-group mb-3">
       <span class="input-group-text">Original URL</span>
-      <input type="text" name="urlOrigin" class="form-control" placeholder="ex: http://xxx.com/" value="{{ originalUrl }}" pattern="https?://.+" required>
+      <input type="text" name="urlOrigin" class="form-control" placeholder="ex : http://xxx.com/" value="{{ originalUrl }}" pattern="https?://.+" required>
       <button id="btn-shorten" class="btn btn-outline-secondary" type="submit">Shorten</button>
     </div>
   </form>
@@ -12,5 +20,11 @@
     <input id="url-short" type="text" name="urlShort" class="form-control" value="{{ shortUrl }}{{ shortCode }}" disabled>
     <button id="btn-copy" class="btn btn-secondary btn-copy" type="button" {{disabled shortCode}}>Copy</button>
   </div>
+  {{#if wrongShortCode}}
+  <div class="alert alert-info text-center" role="alert">
+    沒有此短網址 : <em class="fw-bold">{{ wrongShortCode }}</em  class="fs-5">，請輸入網址重新產生短網址。
+  </div>
+  {{!-- <p>沒有此短網址 : {{ wrongShortCode }}，請輸入網址產生短網址。</p> --}}
+  {{/if}}
 </div>
 <script src="/javascripts/index.js"></script>

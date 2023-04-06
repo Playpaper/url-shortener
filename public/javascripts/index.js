@@ -2,15 +2,20 @@ const urlConvertForm = document.querySelector('#url-convert-form')
 const btnShorten = document.querySelector('#btn-shorten')
 const btnCopy = document.querySelector('#btn-copy')
 
-urlConvertForm.addEventListener('submit', function(e) {
+// urlConvertForm.addEventListener('submit', function(e) {
+//   if (!urlConvertForm.checkValidity()) {
+//     e.stopPropagation()
+//     e.preventDefault()
+//     // alert('urlConvertForm invalid')  //驗證不通過，就跳 alert
+//   }
+// })
+
+btnShorten.addEventListener('click', function (e) {
   if (!urlConvertForm.checkValidity()) {
     e.stopPropagation()
     e.preventDefault()
-    alert('urlConvertForm invalid')  //驗證不通過，就跳 alert
+    // alert('urlConvertForm invalid')  //驗證不通過，就跳 alert
   }
-})
-
-btnShorten.addEventListener('click', function (e) {
   urlConvertForm.classList.add('was-validated')
 })
 

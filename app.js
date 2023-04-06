@@ -21,6 +21,7 @@ db.once('open', () => console.log('mongodb connected !'))
 
 const app = express()
 const PORT = 3000
+const shortUrl = `http://localhost:${PORT}/` 
 
 app.engine('hbs', exphbs({
   defaultLayout: 'main',
@@ -38,7 +39,6 @@ app.get('/', (req, res) => {
 
 app.post('/', (req, res) => {
   const originalUrl = req.body.urlOrigin
-  const shortUrl = `https://localhost:${PORT}/` 
   // find db if originalUrl exist ? true(data from db) : false(create a code) 
   Url.findOne({ originalUrl })
     .lean()
@@ -53,8 +53,23 @@ app.post('/', (req, res) => {
     .catch(err => console.log(err))
 })
 
+app.get('/:shortCode', (req, res) => {
+  const shortCode = req.params.shortCode
+  Url.findOne({ shortCode })
+    .then(data => {
+      console.log('data = ', data)
+      data ? res.redirect(data.originalUrl) : res.render('index', { wrongShortCode: shortUrl+shortCode })
+      // if(data) {
+      //    res.redirect(data.originalUrl)
+      // }else {
+      //   res.render('index')
+      // }
+    })
+    .catch(err => console.log(err))
+})
+
 app.listen(PORT, () => {
-  console.log(`The express server is listening on https://localhost/${PORT}`)
+  console.log(`The express server is listening on http://localhost/${PORT}`)
 })
 
 function checkCodeRepeat(res, shortUrl, originalUrl, shortCode) {

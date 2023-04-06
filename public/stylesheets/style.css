@@ -18,7 +18,7 @@
   display: block;
   position: absolute;
   opacity: 0;
-  transition: all 0.5s;
+  transition: all 0.4s;
   top: 0;
   left: 0;
   width: 90px;
@@ -38,18 +38,26 @@
 /* 驗證不通過 */
 form.was-validated .form-control:invalid {
   border: 1px solid #ced4da;
-  /* border-top: 1px solid red; */
-  /* border-bottom: 1px solid red; */
 }
 
 /* 驗證通過 */
 form.was-validated .form-control:valid {
   border: 1px solid #ced4da;
-  /* border: 1px solid green; */
 }
 
 @media screen and (min-width: 1200px) {
   .container{
     max-width: 900px;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .container .title {
+    padding-top: 1rem;
+    text-align: center;
+  }
+  .container .img-box {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
   }
 }
