@@ -1,9 +1,9 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
-const Url = require('./models/url')
-const generateCode = require('./generate_code')
-require("./public/javascripts/helpers")
+const routes = require('./routes')
+
+
 
 if(process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
@@ -21,7 +21,7 @@ db.once('open', () => console.log('mongodb connected !'))
 
 const app = express()
 const PORT = 3000
-const shortUrl = `http://localhost:${PORT}/` 
+
 
 app.engine('hbs', exphbs({
   defaultLayout: 'main',
@@ -31,62 +31,9 @@ app.set('view engine', 'hbs')
 
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended:true }))
+app.use(routes)
 
-
-app.get('/', (req, res) => {
-  res.render('index')
-})
-
-app.post('/', (req, res) => {
-  const originalUrl = req.body.urlOrigin
-  // find db if originalUrl exist ? true(data from db) : false(create a code) 
-  Url.findOne({ originalUrl })
-    .lean()
-    .then(data => {
-      console.log('data = ', data)
-      if(data) {
-        res.render('index', { shortUrl, originalUrl: data.originalUrl, shortCode: data.shortCode })
-      }else{
-        checkCodeRepeat(res, shortUrl, originalUrl, generateCode()) 
-      }
-    })
-    .catch(err => console.log(err))
-})
-
-app.get('/:shortCode', (req, res) => {
-  const shortCode = req.params.shortCode
-  Url.findOne({ shortCode })
-    .then(data => {
-      console.log('data = ', data)
-      data ? res.redirect(data.originalUrl) : res.render('index', { wrongShortCode: shortUrl+shortCode })
-      // if(data) {
-      //    res.redirect(data.originalUrl)
-      // }else {
-      //   res.render('index')
-      // }
-    })
-    .catch(err => console.log(err))
-})
 
 app.listen(PORT, () => {
   console.log(`The express server is listening on http://localhost/${PORT}`)
 })
-
-function checkCodeRepeat(res, shortUrl, originalUrl, shortCode) {
-  console.log('(in)shortCode = ',  shortCode, 'originalUrl = ', originalUrl)
-  Url.exists({ shortCode })
-    .then(data => {
-      if(data) { 
-        // repeat > generate new code
-        console.log('(re)shortCode = ',  shortCode, 'originalUrl = ', originalUrl)
-        checkCodeRepeat(res, shortUrl, originalUrl, generateCode())
-      }else {
-        // no repeat > create code
-        console.log('(final)shortCode = ',  shortCode, 'originalUrl = ', originalUrl)
-        Url.create({ originalUrl, shortCode })
-          .then(() => res.render('index', { shortUrl, originalUrl, shortCode }))
-          .catch(err => console.log(err))
-      }
-    })
-    .catch(err => console.log(err))
-}
