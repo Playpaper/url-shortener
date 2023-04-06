@@ -1,24 +1,16 @@
 const urlConvertForm = document.querySelector('#url-convert-form')
-const btnShorten = document.querySelector('#btn-shorten')
 const btnCopy = document.querySelector('#btn-copy')
 
-// urlConvertForm.addEventListener('submit', function(e) {
-//   if (!urlConvertForm.checkValidity()) {
-//     e.stopPropagation()
-//     e.preventDefault()
-//     // alert('urlConvertForm invalid')  //驗證不通過，就跳 alert
-//   }
-// })
-
-btnShorten.addEventListener('click', function (e) {
+// check original url
+urlConvertForm.addEventListener('submit', function(e) {
   if (!urlConvertForm.checkValidity()) {
     e.stopPropagation()
     e.preventDefault()
-    // alert('urlConvertForm invalid')  //驗證不通過，就跳 alert
   }
   urlConvertForm.classList.add('was-validated')
 })
 
+// copy short url
 btnCopy.addEventListener('click', function (e) {
   const urlShort = document.querySelector('#url-short')
 
