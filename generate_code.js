@@ -1,31 +1,20 @@
-// define randomElement function
-function randomElement(collection) {
-  let index = Math.floor(Math.random() * collection.length)
-  return collection[index]
-}
-
-// define generateCode function (shortener url)
+// define generateCode function (shorten url)
 function generateCode() {
-  console.log(`This function will generate code !`)
   
   // define the kind of code
-  const LOWER_CASE_LETTERS = 'abcdefghijklmnopqrstuvwxyz'
-  const UPPER_CASE_LETTERS = LOWER_CASE_LETTERS.toUpperCase()
+  const LOWER_LETTERS = 'abcdefghijklmnopqrstuvwxyz'
+  const UPPER_LETTERS = LOWER_LETTERS.toUpperCase()
   const NUMBERS = '1234567890'
-  const SHORT_LENGTH = 5
+  const LENGTH = 5
 
-  // create a collection of shortener url
-  let collection = []
-
-  collection = collection
-    .concat(LOWER_CASE_LETTERS.split(''))
-    .concat(UPPER_CASE_LETTERS.split(''))
-    .concat(NUMBERS.split(''))
+  const STR = LOWER_LETTERS + UPPER_LETTERS + NUMBERS
   
   // create code => invoke randomElement function
   let code = ''
-  for(let i = 0; i < SHORT_LENGTH; i++) {
-    code += randomElement(collection)
+
+  for(let i = 0; i < LENGTH; i++) {
+    const randomIndex =  Math.floor(Math.random() * STR.length)
+    code += STR.charAt(randomIndex)
   }
 
   // return code

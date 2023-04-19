@@ -24,7 +24,10 @@ router.post('/', (req, res) => {
         checkCodeRepeat(res, shortUrl, originalUrl, generateCode()) 
       }
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log(err)
+      res.render('index', { error: err.message })
+    })
 })
 
 // short url > original url
@@ -34,7 +37,10 @@ router.get('/:shortCode', (req, res) => {
     .then(data => {
       data ? res.redirect(data.originalUrl) : res.render('index', { wrongShortCode: shortUrl+shortCode })
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log(err)
+      res.render('index', { error: err.message })
+    })
 })
 
 // create a new shortCode and check if repeat
@@ -48,10 +54,16 @@ function checkCodeRepeat(res, shortUrl, originalUrl, shortCode) {
         // no repeat > create code
         Url.create({ originalUrl, shortCode })
           .then(() => res.render('index', { shortUrl, originalUrl, shortCode }))
-          .catch(err => console.log(err))
+          .catch(err => {
+      console.log(err)
+      res.render('index', { error: err.message })
+    })
       }
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log(err)
+      res.render('index', { error: err.message })
+    })
 }
 
 module.exports = router

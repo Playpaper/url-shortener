@@ -28,6 +28,12 @@
       沒有此短網址 : <em class="fw-bold">{{ wrongShortCode }}</em>，請輸入網址重新產生短網址。
     </div>
   {{/if}}
+
+  {{#if error}}
+  <div class="alert alert-info text-center" role="alert">
+    錯誤訊息 : <em class="fw-bold">{{ error }}</em>。
+  </div>
+  {{/if}}
   
 </div>
 <script src="/javascripts/index.js"></script>
